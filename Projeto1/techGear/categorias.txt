@@ -1,0 +1,14 @@
+cod#nome#descricao
+106#Informática#Computadores, componentes e acessórios
+107#Jardinagem#Ferramentas e acessórios para jardinagem
+108#Esportes#Equipamentos e vestuário esportivo
+109#Automotivo#Acessórios e peças para veículos
+110#Móveis#Mobiliário para casa e escritório
+111#Decoração#Itens decorativos e para casa
+112#Pet Shop#Produtos para cuidados de animais de estimação
+113#Ferramentas#Ferramentas manuais e elétricas
+114#Saúde e Beleza#Produtos de cuidados pessoais e farmacêuticos
+115#Jogos e Consoles#Consoles e videogames para entretenimento, jogos, jogos online
+116#Livros e Cursos#Livros físicos e e-books, cursos online
+117#Musica e Filmes# Musicas e filmes online
+118#Softwares#Softwares em geral
