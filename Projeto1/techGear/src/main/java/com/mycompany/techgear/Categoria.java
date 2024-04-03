@@ -19,8 +19,6 @@ public class Categoria {
         this.codigo = codigo;
         this.nome = nome;
         this.descricao = descricao;
-        
-        System.out.println(toString());
     }
     
     public int getCodigo() {
@@ -78,6 +76,10 @@ public class Categoria {
     
     @Override
     public String toString() {
-        return nome + " (" + codigo + ") :" + descricao;
+        return nome + " (" + codigo + "): " + descricao;
+    }
+    
+    public String toLine() {
+        return codigo + "#" + nome + "#" + descricao + "\n";
     }
 }

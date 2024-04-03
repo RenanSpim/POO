@@ -16,7 +16,7 @@ ID#nome#preco#descricao#marca#categoria#peso#dimensoes
 7704#Headset Bluetooth#593.96#Áudio de alta qualidade com conexão sem fio#Carson and Sons#106#3.41#17.1x14.79x43.48
 7994#Headset Bluetooth#1637.24#Áudio de alta qualidade com conexão sem fio#Dean, Reed and Allison#106#4.85#10.05x25.91x15.73
 2881#Headset Bluetooth#1080.94#Áudio de alta qualidade com conexão sem fio#Mcfarland PLC#106#0.87#18.41x25.0x48.56
-3406#Headset Bluetooth#250.22#Áudio de alta qualidade com conexão sem fio#Carrillo, Rodriguez and Clark#106#1.92#19.76x25.6x20.33
+3406#Headset Bluetooth#250.22#Áudio de alta qualidade com conexão sem fio#Carrillo, Rodriguez and Clark#106#1.92#19.76x25.6x20.33	
 3333#Sementes Orgânicas#151.81#Variedade de sementes para cultivo orgânico#Murphy LLC#107#3.38#46.59x30.74x29.41
 5552#Sementes Orgânicas#527.26#Variedade de sementes para cultivo orgânico#Cook-Schmidt#107#0.96#26.49x12.65x11.63
 5999#Sementes Orgânicas#578.67#Variedade de sementes para cultivo orgânico#Peck, Patterson and Roberson#107#0.56#16.71x39.19x22.06

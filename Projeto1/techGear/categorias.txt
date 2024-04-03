@@ -12,3 +12,4 @@ cod#nome#descricao
 116#Livros e Cursos#Livros físicos e e-books, cursos online
 117#Musica e Filmes# Musicas e filmes online
 118#Softwares#Softwares em geral
+69#renao#renao faz tudo

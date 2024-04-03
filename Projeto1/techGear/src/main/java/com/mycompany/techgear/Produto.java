@@ -99,4 +99,6 @@ public abstract class Produto {
     public String toString() {
         return nome + " (" + id + ")";
     }
+    
+    public abstract String toLine();
 }

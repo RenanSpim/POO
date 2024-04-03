@@ -38,4 +38,10 @@ public class ProdutoVirtual extends Produto {
     public void realizarDownload() {
         // TODO
     }
+    
+    public String toLine() {
+        return getId() + "#" + getNome() + "#" + getPreco() + "#"
+            + getDescricao() + "#" + getMarca() + "#" + getCategoria().getCodigo() + "#"
+            + tamanhoArquivo + " GB" + "#" + formato + "\n";
+    }
 }

@@ -1,27 +1,37 @@
 package com.mycompany.techgear;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Loja {
     private String nome;
     private String cnpj;
     private String endereco;
     private List<Categoria> listaCategorias;
+    private String categoriaPath;
+    private String produtoFisicoPath;
+    private String produtoVirtualPath;
     
-    public Loja() {
+    private Loja() {
         listaCategorias = new ArrayList<>();
         nome = "Lojinha que vai falir o uai";
         cnpj = "13.618.897/0001-63";
         endereco = "R. Cristóvão Colombo, 2265 - Jardim Nazareth, São José do Rio Preto - SP, 15054-000";
     }
     
-    public Loja(String nome, String cnpj, String endereco) {
+    public Loja(String categoriaPath, String fisicoPath, String virtualPath) {
         this();
         
-        this.nome = nome;
-        this.cnpj = cnpj;
-        this.endereco = endereco;
+        this.categoriaPath = categoriaPath;
+        this.produtoFisicoPath = fisicoPath;
+        this.produtoVirtualPath = virtualPath;
     }
     
     public String getNome() {
@@ -39,7 +49,6 @@ public class Loja {
     public List<Categoria> getListaCategorias() {
         return listaCategorias;
     }
-    
     
     public void adicionarCategoria(Categoria categoria) {
         if (buscarCategoria(categoria.getCodigo()) == null) {
@@ -125,5 +134,50 @@ public class Loja {
         for (Categoria categ : listaCategorias) {
             categ.removerProduto(id);
         }
+    }
+    
+    public void salvar() {
+        FileWriter fw = null;
+        String conteudo, contAux;
+        
+        conteudo = "cod#nome#descricao\n";
+        
+        for (Categoria categoria : listaCategorias) {
+            conteudo += categoria.toLine();
+        }
+        
+        try {
+            fw = new FileWriter(categoriaPath);
+            fw.write(conteudo);
+            fw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Loja.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        conteudo = "ID#nome#preco#descricao#marca#categoria#tamanhoArquivo#formato\n";
+        contAux = "ID#nome#preco#descricao#marca#categoria#peso#dimensoes\n";
+        
+        for (Categoria categoria : listaCategorias) {
+            for (Produto produto : categoria.listarProdutos()) {
+                if (produto instanceof ProdutoVirtual) {
+                    conteudo += produto.toLine();
+                } else {
+                    contAux += produto.toLine();
+                }
+                
+            }
+        }
+        
+        try {
+            fw = new FileWriter(produtoFisicoPath);
+            fw.write(contAux);
+            fw.close();
+            
+            fw = new FileWriter(produtoVirtualPath);
+            fw.write(conteudo);
+            fw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Loja.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }

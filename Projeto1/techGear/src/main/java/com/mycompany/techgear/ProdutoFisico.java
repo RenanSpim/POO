@@ -46,4 +46,10 @@ public class ProdutoFisico extends Produto {
         // TODO
         return 0.0;
     }
+    
+    public String toLine() {
+        return getId() + "#" + getNome() + "#" + getPreco() + "#"
+            + getDescricao() + "#" + getMarca() + "#" + getCategoria().getCodigo() + "#"
+            + peso + "#" + dimensoes + "\n";
+    }
 }

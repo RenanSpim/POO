@@ -10,8 +10,7 @@ public class DisplayLoja {
     private Loja loja;
     private Scanner scanner;
     
-    public DisplayLoja() {
-        loja = new Loja();
+    private DisplayLoja() {
         scanner = new Scanner(System.in);
     }
     
@@ -20,6 +19,7 @@ public class DisplayLoja {
     ) {
         this();
         
+        loja = new Loja(categoriasPath, fisicosPath, virtuaisPath);
         Scanner scn = null;
         File arquivo = new File(categoriasPath);
         
@@ -125,9 +125,11 @@ public class DisplayLoja {
         System.out.println("2 - Realizar compra.");
         System.out.println("3 - Gerenciar categorias.");
         System.out.println("4 - Gerenciar produtos.");
+        System.out.println("5 - Salvar.");
         System.out.println("0 - Sair.");
         
         opcao = scanner.nextInt();
+        scanner.nextLine();
         
         switch (opcao) {
             case 0:
@@ -144,6 +146,9 @@ public class DisplayLoja {
                 break;
             case 4:
                 gerenciarProdutos();
+                break;
+            case 5:
+                loja.salvar();
                 break;
             default:
                 System.out.println("Operacao invalida, tente novamente...");
@@ -186,7 +191,8 @@ public class DisplayLoja {
         System.out.println("0 - Voltar.");
         
         opcao = scanner.nextInt();
-        
+        scanner.nextLine();
+
         switch (opcao) {
             case 0:
                 System.out.println("Voltando para a tela do usuario...");
@@ -196,6 +202,7 @@ public class DisplayLoja {
                 
                 System.out.println("Codigo: ");
                 catAux.setCodigo(scanner.nextInt());
+                scanner.nextLine();
                 
                 System.out.println("Nome: ");
                 catAux.setNome(scanner.nextLine());
@@ -257,6 +264,7 @@ public class DisplayLoja {
                 System.out.println("2 - Descricao.");
                 System.out.println("3 - Codigo.");
                 opcao = scanner.nextInt();
+                scanner.nextLine();
                 
                 if (opcao == 1) {
                     catAux.setNome(scanner.nextLine());
@@ -264,6 +272,7 @@ public class DisplayLoja {
                     catAux.setDescricao(scanner.nextLine());
                 } else if (opcao == 3) {
                     catAux.setCodigo(scanner.nextInt());
+                    scanner.nextLine();
                 } else {
                     System.out.println("Retornando, nada mudado.");
                     break;
@@ -320,6 +329,7 @@ public class DisplayLoja {
         System.out.println("0 - Sair.");
         
         opcao = scanner.nextInt();
+        scanner.nextLine();
         
         switch (opcao) {
             case 0:
@@ -329,6 +339,7 @@ public class DisplayLoja {
                 System.out.println("Novo produto:");
                 System.out.println("Id: ");
                 prodFisAux.setId(scanner.nextInt());
+                scanner.nextLine();
                 
                 System.out.println("Nome: ");
                 prodFisAux.setNome(scanner.nextLine());
@@ -478,10 +489,12 @@ public class DisplayLoja {
                 System.out.println("6 - Categoria.");
                 System.out.println("7 - Estoque.");
                 opcao = scanner.nextInt();
-                
+                scanner.nextLine();
+
                 if (prodFisAux != null) {
                     if (opcao == 1) {
                         prodFisAux.setId(scanner.nextInt());
+                        scanner.nextLine();
                     } else if (opcao == 2) {
                         prodFisAux.setNome(scanner.nextLine());
                     } else if (opcao == 3) {
@@ -507,6 +520,7 @@ public class DisplayLoja {
                         }
                     } else if (opcao == 7) {
                         prodFisAux.setEstoque(scanner.nextInt());
+                        scanner.nextLine();
                     } else {
                         
                     }
