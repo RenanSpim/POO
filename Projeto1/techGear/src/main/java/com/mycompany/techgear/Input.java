@@ -48,7 +48,14 @@ public class Input {
     public String getStringInput() {
         String inp;
         
-        inp = scanner.nextLine();
+        do {
+            inp = scanner.nextLine();
+            
+            if (inp.length() == 0) {
+                System.out.println("Input precisa conter pelo menos 1 caracter.");
+            }
+        } while (inp.length() == 0);
+        
         
         return inp;
     }
