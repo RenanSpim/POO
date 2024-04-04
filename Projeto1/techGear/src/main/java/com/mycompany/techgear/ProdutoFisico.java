@@ -10,9 +10,9 @@ public class ProdutoFisico extends Produto {
     
     public ProdutoFisico(
             int id, String nome, double preco, String descricao, String marca,
-            Categoria categoria, double peso, String dimensoes
+            Categoria categoria, double peso, String dimensoes, int estoque
     ) {
-        super(id, nome, preco, descricao, marca, categoria);
+        super(id, nome, preco, descricao, marca, categoria, estoque);
         
         this.peso = peso;
         this.dimensoes = dimensoes;
@@ -32,14 +32,15 @@ public class ProdutoFisico extends Produto {
         return dimensoes;
     }
     
-    public void setDimensoes(String dimensoes) {
+    public boolean setDimensoes(String dimensoes) {
         for (String str : dimensoes.split("x")) {
             if (str.matches("\\D+")) {
-                return;
+                return false;
             }
         }
         
         this.dimensoes = dimensoes;
+        return true;
     }
     
     public double calcularFrete() {
@@ -50,6 +51,6 @@ public class ProdutoFisico extends Produto {
     public String toLine() {
         return getId() + "#" + getNome() + "#" + getPreco() + "#"
             + getDescricao() + "#" + getMarca() + "#" + getCategoria().getCodigo() + "#"
-            + peso + "#" + dimensoes + "\n";
+            + peso + "#" + dimensoes + "#" + getEstoque() + "\n";
     }
 }

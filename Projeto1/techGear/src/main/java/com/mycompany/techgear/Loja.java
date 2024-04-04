@@ -2,9 +2,6 @@ package com.mycompany.techgear;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -154,8 +151,8 @@ public class Loja {
             Logger.getLogger(Loja.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
-        conteudo = "ID#nome#preco#descricao#marca#categoria#tamanhoArquivo#formato\n";
-        contAux = "ID#nome#preco#descricao#marca#categoria#peso#dimensoes\n";
+        conteudo = "ID#nome#preco#descricao#marca#categoria#tamanhoArquivo#formato#estoque\n";
+        contAux = "ID#nome#preco#descricao#marca#categoria#peso#dimensoes#estoque\n";
         
         for (Categoria categoria : listaCategorias) {
             for (Produto produto : categoria.listarProdutos()) {
@@ -164,7 +161,6 @@ public class Loja {
                 } else {
                     contAux += produto.toLine();
                 }
-                
             }
         }
         
@@ -178,6 +174,6 @@ public class Loja {
             fw.close();
         } catch (IOException ex) {
             Logger.getLogger(Loja.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 }

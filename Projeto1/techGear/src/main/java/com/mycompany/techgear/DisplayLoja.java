@@ -2,16 +2,20 @@ package com.mycompany.techgear;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DisplayLoja {
     private Loja loja;
-    private Scanner scanner;
+    private Input input;
+    private List<Produto> carrinho;
     
     private DisplayLoja() {
-        scanner = new Scanner(System.in);
+        input = new Input();
+        carrinho = new ArrayList<Produto>();
     }
     
     public DisplayLoja(
@@ -75,7 +79,8 @@ public class DisplayLoja {
                     campos[4], //marca
                     loja.buscarCategoria(Integer.parseInt(campos[5])), // categoria
                     Double.parseDouble(campos[6]), // peso
-                    campos[7] // dimensoes
+                    campos[7], // dimensoes
+                    campos.length == 9 ? Integer.parseInt(campos[8]) : 0 // estoque
                 )
             );
         }
@@ -107,7 +112,8 @@ public class DisplayLoja {
                     campos[4], //marca
                     loja.buscarCategoria(Integer.parseInt(campos[5])), // categoria
                     Double.parseDouble(campos[6].split(" ")[0]), // tamanho
-                    campos[7] // formato
+                    campos[7], // formato
+                    campos.length == 9 ? Integer.parseInt(campos[8]) : 0 // estoque
                 )
             );
         }
@@ -128,8 +134,7 @@ public class DisplayLoja {
         System.out.println("5 - Salvar.");
         System.out.println("0 - Sair.");
         
-        opcao = scanner.nextInt();
-        scanner.nextLine();
+        opcao = input.getIntInput();
         
         switch (opcao) {
             case 0:
@@ -149,6 +154,7 @@ public class DisplayLoja {
                 break;
             case 5:
                 loja.salvar();
+                System.out.println("Salvo com exito.");
                 break;
             default:
                 System.out.println("Operacao invalida, tente novamente...");
@@ -166,15 +172,102 @@ public class DisplayLoja {
     }
     
     private void buscarProdutos() {
-        // TODO
+        String opcStr;
+        ProdutoFisico prodFisAux;
+        ProdutoVirtual prodVirAux;
+        
+        System.out.println("Informe o nome ou o id do produto que deseja buscar:");
+        opcStr = input.getStringInput();
+        
+        if (loja.buscarProduto(Integer.parseInt(opcStr)) instanceof ProdutoFisico) {
+            if (Input.inputHasNum(opcStr)) {
+                prodFisAux = (ProdutoFisico) loja.buscarProduto(Integer.parseInt(opcStr));
+            } else {
+                prodFisAux = (ProdutoFisico) loja.buscarProduto(opcStr);
+            }
+
+            System.out.println("O produto " + prodFisAux.toString() + " tem " + prodFisAux.getEstoque() + " itens no estoque.");
+            adicionarAoCarrinho(opcStr);
+        } else {
+            if (Input.inputHasNum(opcStr)) {
+                prodVirAux = (ProdutoVirtual) loja.buscarProduto(Integer.parseInt(opcStr));
+            } else {
+                prodVirAux = (ProdutoVirtual) loja.buscarProduto(opcStr);
+            }
+
+            System.out.println("O produto " + prodVirAux.toString() + " tem " + prodVirAux.getEstoque() + " itens no estoque.");
+            adicionarAoCarrinho(opcStr);
+        }
     }
     
     private void adicionarAoCarrinho(Produto produto) {
-        // TODO
+        carrinho.add(produto);
+    }
+    
+    private void adicionarAoCarrinho(String opcStr) {
+        int opcao;
+        ProdutoFisico prodFisAux;
+        ProdutoVirtual prodVirAux;
+        
+        if (loja.buscarProduto(Integer.parseInt(opcStr)) instanceof ProdutoFisico) {
+            if (Input.inputHasNum(opcStr)) {
+                prodFisAux = (ProdutoFisico) loja.buscarProduto(Integer.parseInt(opcStr));
+            } else {
+                prodFisAux = (ProdutoFisico) loja.buscarProduto(opcStr);
+            }
+
+            System.out.println("Quantos " + prodFisAux.toString() + " vao ser adicionados ao carrinho?");
+            System.out.println("Em estoque: " + prodFisAux.getEstoque());
+            opcao = input.getIntInput(0, prodFisAux.getEstoque());
+            
+            for (int i = 0; i < opcao; i++) {
+                adicionarAoCarrinho(prodFisAux);
+            }
+        } else {
+            if (Input.inputHasNum(opcStr)) {
+                prodVirAux = (ProdutoVirtual) loja.buscarProduto(Integer.parseInt(opcStr));
+            } else {
+                prodVirAux = (ProdutoVirtual) loja.buscarProduto(opcStr);
+            }
+
+            System.out.println("Quantos " + prodVirAux.toString() + " vao ser adicionados ao carrinho?");
+            System.out.println("Em estoque: " + prodVirAux.getEstoque());
+            opcao = input.getIntInput(1, prodVirAux.getEstoque());
+            
+            for (int i = 0; i < opcao; i++) {
+                adicionarAoCarrinho(prodVirAux);
+            }
+        }
+    }
+    
+    private void mostrarCarrinho() {
+        double precoTotal = 0;
+        
+        System.out.println("Carrinho (" + carrinho.size() + "):");
+        for (Produto prod : carrinho) {
+            System.out.println(prod.getNome() + ": $" + prod.getPreco());
+            precoTotal += prod.getPreco();
+        }
+        
+        System.out.println("Preco total: $" + precoTotal);
     }
     
     private void realizarCompra() {
-        // TODO
+        String opcStr;
+        
+        mostrarCarrinho();
+        System.out.println("O cliente deseja prosseguir com a compra? [S/N]");
+        opcStr = input.getStringInput();
+        
+        if (opcStr.equals("S") || opcStr.equals("s")) {
+            System.out.println("Limpando o carrinho...");
+            
+            for (Produto prod : carrinho) {
+                prod.atualizarEstoque(-1);
+            }
+            
+            carrinho = new ArrayList<>();
+        }
     }
     
     private void gerenciarCategorias() {
@@ -190,8 +283,7 @@ public class DisplayLoja {
         System.out.println("5 - Ver categoria.");
         System.out.println("0 - Voltar.");
         
-        opcao = scanner.nextInt();
-        scanner.nextLine();
+        opcao = input.getIntInput();
 
         switch (opcao) {
             case 0:
@@ -201,14 +293,19 @@ public class DisplayLoja {
                 System.out.println("Informe os dados da categoria que deseja criar:");
                 
                 System.out.println("Codigo: ");
-                catAux.setCodigo(scanner.nextInt());
-                scanner.nextLine();
+                int codigo = input.getIntInput();
+                
+                if (loja.buscarCategoria(codigo) == null) {
+                    catAux.setCodigo(codigo);
+                } else {
+                    System.out.println("Codigo em uso.");
+                }
                 
                 System.out.println("Nome: ");
-                catAux.setNome(scanner.nextLine());
+                catAux.setNome(input.getStringInput());
                 
                 System.out.println("Descricao: ");
-                catAux.setDescricao(scanner.nextLine());
+                catAux.setDescricao(input.getStringInput());
                 
                 if (loja.buscarCategoria(catAux.getCodigo()) != null) {
                     System.out.println("Ja existe um produto com esse codigo.");
@@ -222,17 +319,17 @@ public class DisplayLoja {
                 break;
             case 2:
                 System.out.println("Informe o nome ou o codigo da categoria que deseja remover:");
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
-                if (opcStr != null && opcStr.matches("[0-9.]+")) {
+                if (Input.inputHasNum(opcStr)) {
                     catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
                 } else {
                     catAux = loja.buscarCategoria(opcStr);
                 }
                 
                 System.out.println("Atencao, todos os produtos da categoria tambem serao removidos.");
-                System.out.println("Deseja remover " + catAux.getNome() + " (" + catAux.getCodigo() + ") e todos seus produtos? [S/N]");
-                opcStr = scanner.nextLine();
+                System.out.println("Deseja remover " + catAux.toString() + " e todos seus produtos? [S/N]");
+                opcStr = input.getStringInput();
                 
                 if (opcStr.equals("s") || opcStr.equals("S")) {
                     System.out.println("Removendo...");
@@ -243,16 +340,16 @@ public class DisplayLoja {
                 break;
             case 3:
                 System.out.println("Informe o nome ou o codigo da categoria que deseja editar:");
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
-                if (opcStr != null && opcStr.matches("[0-9.]+")) {
+                if (Input.inputHasNum(opcStr)) {
                     catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
                 } else {
                     catAux = loja.buscarCategoria(opcStr);
                 }
                 
                 System.out.println("Deseja editar " + catAux.toString() + "? [S/N]");
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
                 if (opcStr.equals("N") || opcStr.equals("n")) {
                     System.out.println("Abortando operacao...");
@@ -262,17 +359,12 @@ public class DisplayLoja {
                 System.out.println("O campo a ser editado: ");
                 System.out.println("1 - Nome.");
                 System.out.println("2 - Descricao.");
-                System.out.println("3 - Codigo.");
-                opcao = scanner.nextInt();
-                scanner.nextLine();
+                opcao = input.getIntInput();
                 
                 if (opcao == 1) {
-                    catAux.setNome(scanner.nextLine());
+                    catAux.setNome(input.getStringInput());
                 } else if (opcao == 2) {
-                    catAux.setDescricao(scanner.nextLine());
-                } else if (opcao == 3) {
-                    catAux.setCodigo(scanner.nextInt());
-                    scanner.nextLine();
+                    catAux.setDescricao(input.getStringInput());
                 } else {
                     System.out.println("Retornando, nada mudado.");
                     break;
@@ -288,9 +380,9 @@ public class DisplayLoja {
                 catAux = null;
                 
                 System.out.println("Informe o nome ou o codigo da categoria que deseja ver:");
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
-                if (opcStr != null && opcStr.matches("[0-9.]+")) {
+                if (Input.inputHasNum(opcStr)) {
                     catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
                 } else {
                     catAux = loja.buscarCategoria(opcStr);
@@ -301,7 +393,7 @@ public class DisplayLoja {
                     break;
                 }
                 
-                System.out.println(catAux.toString() + " :");
+                System.out.println(catAux.toString() + ": ");
                 for (Produto prod : catAux.listarProdutos()) {
                     System.out.println("\t" + prod.toString());
                 }
@@ -315,7 +407,6 @@ public class DisplayLoja {
     
     private void gerenciarProdutos() {
         int opcao;
-        double daux;
         String opcStr;
         Categoria catAux = null;
         ProdutoFisico prodFisAux = new ProdutoFisico();
@@ -328,44 +419,47 @@ public class DisplayLoja {
         System.out.println("4 - Ver todos os produtos.");
         System.out.println("0 - Sair.");
         
-        opcao = scanner.nextInt();
-        scanner.nextLine();
+        opcao = input.getIntInput();
         
         switch (opcao) {
             case 0:
                 System.out.println("Voltando para a tela do usuario...");
                 return;
             case 1:
-                System.out.println("Novo produto:");
-                System.out.println("Id: ");
-                prodFisAux.setId(scanner.nextInt());
-                scanner.nextLine();
-                
+                System.out.println("Novo produto:");                
                 System.out.println("Nome: ");
-                prodFisAux.setNome(scanner.nextLine());
+                prodFisAux.setNome(input.getStringInput());
                 
                 System.out.println("Preco: ");
-                prodFisAux.setPreco(scanner.nextDouble());
-                scanner.nextLine();
+                prodFisAux.setPreco(input.getDoubleInput());
                 
                 System.out.println("Descricao: ");
-                prodFisAux.setDescricao(scanner.nextLine());
+                prodFisAux.setDescricao(input.getStringInput());
                 
                 System.out.println("Marca: ");
-                prodFisAux.setMarca(scanner.nextLine());
+                prodFisAux.setMarca(input.getStringInput());
                 
                 System.out.println("Categoria (nome ou codigo): ");
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
-                if (opcStr != null && opcStr.matches("[0-9.]+")) {
+                if (Input.inputHasNum(opcStr)) {
                     prodFisAux.setCategoria(loja.buscarCategoria(Integer.parseInt(opcStr)));
                 } else {
                     prodFisAux.setCategoria(loja.buscarCategoria(opcStr));
                 }
                 
+                System.out.println("Id: ");
+                boolean idEmUso;
+                do {
+                    idEmUso = !prodFisAux.setId(input.getIntInput());
+                    if (idEmUso) {
+                        System.out.println("Id em uso");
+                    }
+                } while (idEmUso);
+                
                 do {
                     System.out.println("Virtual(v) ou fisico(f)? ");
-                    opcStr = scanner.nextLine();
+                    opcStr = input.getStringInput();
                     
                     if (!"v".equals(opcStr) && !"d".equals(opcStr)) {
                         System.out.println("Opcao invalida, tente novamente.");
@@ -381,35 +475,22 @@ public class DisplayLoja {
                     prodVirAux.setPreco(prodFisAux.getPreco());
                     
                     System.out.println("Tamanho do arquivo (GB): ");
-                    
-                    do {
-                        daux = scanner.nextDouble();
-                        scanner.nextLine();
-                        
-                        if (daux <= 0.0) {
-                            System.out.println("Tamanho invalido, tente novamente.");
-                        }
-                    } while (daux <= 0.0);
-                    prodVirAux.setTamanhoArquivo(daux);
+                    prodVirAux.setTamanhoArquivo(input.getDoubleInput());
                     
                     System.out.println("Formato: ");
-                    prodVirAux.setFormato(scanner.nextLine());
+                    prodVirAux.setFormato(input.getStringInput());
                     
                     loja.adicionarProduto(prodVirAux);
                 } else {
                     System.out.println("Peso: ");
-                    prodFisAux.setPeso(scanner.nextDouble());
-                    scanner.nextLine();
+                    prodFisAux.setPeso(input.getDoubleInput());
                     
                     System.out.println("Dimensoes: ");
-                    opcStr = scanner.nextLine();
-                    
-                    for (String str : opcStr.split("x")) {
-                        if (str.matches("\\D+")) {
-                            return;
-                        }
-                    }
-                    prodFisAux.setDimensoes(opcStr);
+                    boolean inputCorreto;
+                    do {
+                        opcStr = input.getStringInput();
+                        inputCorreto = prodFisAux.setDimensoes(opcStr);
+                    } while (!inputCorreto);
                     
                     loja.adicionarProduto(prodFisAux);
                 }
@@ -419,9 +500,9 @@ public class DisplayLoja {
                 prodVirAux = null;
                 
                 System.out.println("Informe o nome ou o id do produto que deseja remover:");
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
-                if (opcStr != null && opcStr.matches("[0-9.]+")) {
+                if (Input.inputHasNum(opcStr)) {
                     if (loja.buscarProduto(Integer.parseInt(opcStr)) instanceof ProdutoFisico) {
                         prodFisAux = (ProdutoFisico) loja.buscarProduto(Integer.parseInt(opcStr));
                     } else {
@@ -441,7 +522,7 @@ public class DisplayLoja {
                     System.out.println("Deseja remover " + prodFisAux.toString() + "? [S/N]");
                 }
                 
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
                 if (opcStr.equals("s") || opcStr.equals("S")) {
                     System.out.println("Removendo...");
@@ -456,9 +537,9 @@ public class DisplayLoja {
                 catAux = null;
                 
                 System.out.println("Informe o nome ou o codigo do produto que deseja editar:");
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
-                if (opcStr != null && opcStr.matches("[0-9.]+")) {
+                if (Input.inputHasNum(opcStr)) {
                     if (loja.buscarProduto(Integer.parseInt(opcStr)) instanceof ProdutoFisico) {
                         prodFisAux = (ProdutoFisico) loja.buscarProduto(Integer.parseInt(opcStr));
                     } else {
@@ -473,7 +554,7 @@ public class DisplayLoja {
                 }
                 
                 System.out.println("Deseja editar " + (prodFisAux == null ? prodVirAux : prodFisAux).toString() + "? [S/N]");
-                opcStr = scanner.nextLine();
+                opcStr = input.getStringInput();
                 
                 if (opcStr.equals("N") || opcStr.equals("n")) {
                     System.out.println("Abortando operacao...");
@@ -488,26 +569,25 @@ public class DisplayLoja {
                 System.out.println("5 - Marca.");
                 System.out.println("6 - Categoria.");
                 System.out.println("7 - Estoque.");
-                opcao = scanner.nextInt();
-                scanner.nextLine();
+                opcao = input.getIntInput();
 
                 if (prodFisAux != null) {
                     if (opcao == 1) {
-                        prodFisAux.setId(scanner.nextInt());
-                        scanner.nextLine();
+                        if (!prodFisAux.setId(input.getIntInput())) {
+                            System.out.println("Ja existe um produto com esse Id.");
+                        }
                     } else if (opcao == 2) {
-                        prodFisAux.setNome(scanner.nextLine());
+                        prodFisAux.setNome(input.getStringInput());
                     } else if (opcao == 3) {
-                        prodFisAux.setPreco(scanner.nextDouble());
-                        scanner.nextLine();
+                        prodFisAux.setPreco(input.getDoubleInput());
                     } else if (opcao == 4) {
-                        prodFisAux.setDescricao(scanner.nextLine());
+                        prodFisAux.setDescricao(input.getStringInput());
                     } else if (opcao == 5) {
-                        prodFisAux.setMarca(scanner.nextLine());
+                        prodFisAux.setMarca(input.getStringInput());
                     } else if (opcao == 6) {
-                        opcStr = scanner.nextLine();
+                        opcStr = input.getStringInput();
                         
-                        if (opcStr.matches("\\d+")) {
+                        if (Input.inputHasNum(opcStr)) {
                             catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
                         } else {
                             catAux = loja.buscarCategoria(opcStr);
@@ -519,27 +599,27 @@ public class DisplayLoja {
                             prodFisAux.setCategoria(catAux);
                         }
                     } else if (opcao == 7) {
-                        prodFisAux.setEstoque(scanner.nextInt());
-                        scanner.nextLine();
+                        prodFisAux.setEstoque(input.getIntInput());
                     } else {
-                        
+                        System.out.println("Essa opcao nao existe, retornando...");
                     }
                 } else {
                     if (opcao == 1) {
-                        prodVirAux.setId(Integer.parseInt(scanner.nextLine()));
+                        if (!prodVirAux.setId(input.getIntInput())) {
+                            System.out.println("Ja existe um produto com esse Id.");
+                        }
                     } else if (opcao == 2) {
-                        prodVirAux.setNome(scanner.nextLine());
+                        prodVirAux.setNome(input.getStringInput());
                     } else if (opcao == 3) {
-                        prodVirAux.setPreco(scanner.nextDouble());
-                        scanner.nextLine();
+                        prodVirAux.setPreco(input.getDoubleInput());
                     } else if (opcao == 4) {
-                        prodVirAux.setDescricao(scanner.nextLine());
+                        prodVirAux.setDescricao(input.getStringInput());
                     } else if (opcao == 5) {
-                        prodVirAux.setMarca(scanner.nextLine());
+                        prodVirAux.setMarca(input.getStringInput());
                     } else if (opcao == 6) {
-                        opcStr = scanner.nextLine();
+                        opcStr = input.getStringInput();
                         
-                        if (opcStr.matches("\\d+")) {
+                        if (Input.inputHasNum(opcStr)) {
                             catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
                         } else {
                             catAux = loja.buscarCategoria(opcStr);
@@ -550,6 +630,10 @@ public class DisplayLoja {
                         } else {
                             prodVirAux.setCategoria(catAux);
                         }
+                    } else if (opcao == 7) {
+                        prodFisAux.setEstoque(input.getIntInput());
+                    } else {
+                        System.out.println("Essa opcao nao existe, retornando...");
                     }
                 }
                 break;
@@ -557,7 +641,7 @@ public class DisplayLoja {
                 for (Categoria categ : loja.getListaCategorias()) {
                     System.out.println(categ.toString() + ":");
                     for (Produto prod : categ.listarProdutos()) {
-                        System.out.println("\t" + prod.toString());
+                        System.out.println("\t" + prod.toString() + " (" + prod.getEstoque() +")");
                     }
                 }
                 break;

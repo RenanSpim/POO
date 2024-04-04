@@ -76,7 +76,7 @@ public class Categoria {
     
     @Override
     public String toString() {
-        return nome + " (" + codigo + "): " + descricao;
+        return nome + " (" + codigo + ")";
     }
     
     public String toLine() {

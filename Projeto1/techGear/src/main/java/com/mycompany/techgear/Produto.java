@@ -15,7 +15,7 @@ public abstract class Produto {
     
     public Produto(
             int id, String nome, double preco, String descricao, String marca,
-            Categoria categoria
+            Categoria categoria, int estoque
     ) {
         this();
         
@@ -25,14 +25,20 @@ public abstract class Produto {
         this.descricao = descricao;
         this.marca = marca;
         this.categoria = categoria;
+        this.estoque = estoque;
     }
     
     public int getId() {
         return id;
     }
     
-    public void setId(int id) {
-        this.id = id;
+    public boolean setId(int id) {
+        if (categoria.buscarProduto(id) == null) {
+            this.id = id;
+            return true;
+        }
+        
+        return false;
     }
     
     public String getNome() {

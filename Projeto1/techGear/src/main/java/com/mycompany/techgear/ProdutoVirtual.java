@@ -10,10 +10,9 @@ public class ProdutoVirtual extends Produto {
     
     public ProdutoVirtual(
             int id, String nome, double preco, String descricao, String marca,
-            Categoria categoria, double tamanhoArquivo,
-            String formato
+            Categoria categoria, double tamanhoArquivo, String formato, int estoque
     ) {
-        super(id, nome, preco, descricao, marca, categoria);
+        super(id, nome, preco, descricao, marca, categoria, estoque);
         
         this.tamanhoArquivo = tamanhoArquivo;
         this.formato = formato;
@@ -42,6 +41,6 @@ public class ProdutoVirtual extends Produto {
     public String toLine() {
         return getId() + "#" + getNome() + "#" + getPreco() + "#"
             + getDescricao() + "#" + getMarca() + "#" + getCategoria().getCodigo() + "#"
-            + tamanhoArquivo + " GB" + "#" + formato + "\n";
+            + tamanhoArquivo + " GB" + "#" + formato + "#" + getEstoque() + "\n";
     }
 }
