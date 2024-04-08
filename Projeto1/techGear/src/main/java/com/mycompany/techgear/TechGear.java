@@ -7,9 +7,10 @@ public class TechGear {
         String categoriasPath = "./categorias.txt";
         String fisicosPath = "./produtoFisico.txt";
         String virtuaisPath = "./produtoVirtual.txt";
+        String lojaPath = "./loja.txt";
         
         DisplayLoja dpLoja = new DisplayLoja(
-            categoriasPath, fisicosPath, virtuaisPath
+            categoriasPath, fisicosPath, virtuaisPath, lojaPath
         );
         
         dpLoja.telaUsuario();

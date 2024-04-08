@@ -12,21 +12,26 @@ public class DisplayLoja extends Display {
     private List<Produto> carrinho;
     private DisplayGerenciarCategorias displayCategorias;
     private DisplayGerenciarProdutos displayProdutos;
+    private DisplayGerenciarLoja displayLoja;
     
     private DisplayLoja() {
         super();
-        carrinho = new ArrayList<Produto>();
+        carrinho = new ArrayList<>();
     }
     
     public DisplayLoja(
-        String categoriasPath, String fisicosPath, String virtuaisPath
+        String categoriasPath, String fisicosPath, String virtuaisPath,
+        String lojaPath
     ) {
         this();
-
-        loja = new Loja(categoriasPath, fisicosPath, virtuaisPath);
+        
+        String linha, campos[];
+        
+        loja = new Loja(categoriasPath, fisicosPath, virtuaisPath, lojaPath);
         
         displayCategorias = new DisplayGerenciarCategorias(loja);
         displayProdutos = new DisplayGerenciarProdutos(loja);
+        displayLoja = new DisplayGerenciarLoja(loja);
         
         Scanner scn = null;
         File arquivo = new File(categoriasPath);
@@ -34,7 +39,7 @@ public class DisplayLoja extends Display {
         try {
             scn = new Scanner(arquivo);
         } catch (FileNotFoundException ex) {
-            System.out.println("Arquivo de categorias nao encontrado");
+            System.out.println("Arquivo de categorias nao encontrado.");
             
             Logger
                 .getLogger(TechGear.class.getName())
@@ -44,8 +49,8 @@ public class DisplayLoja extends Display {
         scn.nextLine();
         
         while (scn.hasNextLine()) {
-            String linha = scn.nextLine();
-            String[] campos = linha.split("#");
+            linha = scn.nextLine();
+            campos = linha.split("#");
             
             loja.adicionarCategoria(
                 new Categoria(
@@ -61,7 +66,7 @@ public class DisplayLoja extends Display {
         try {
             scn = new Scanner(arquivo);
         } catch (FileNotFoundException ex) {
-            System.out.println("Arquivo de produtos fisicos nao encontrado");
+            System.out.println("Arquivo de produtos fisicos nao encontrado.");
             
             Logger
                 .getLogger(TechGear.class.getName())
@@ -71,8 +76,8 @@ public class DisplayLoja extends Display {
         scn.nextLine();
         
         while (scn.hasNextLine()) {
-            String linha = scn.nextLine();
-            String[] campos = linha.split("#");
+            linha = scn.nextLine();
+            campos = linha.split("#");
             
             loja.adicionarProduto(
                 new ProdutoFisico(
@@ -94,7 +99,7 @@ public class DisplayLoja extends Display {
         try {
             scn = new Scanner(arquivo);
         } catch (FileNotFoundException ex) {
-            System.out.println("Arquivo de produtos virtuais nao encontrado");
+            System.out.println("Arquivo de produtos virtuais nao encontrado.");
             
             Logger
                 .getLogger(TechGear.class.getName())
@@ -104,8 +109,8 @@ public class DisplayLoja extends Display {
         scn.nextLine();
         
         while (scn.hasNextLine()) {
-            String linha = scn.nextLine();
-            String[] campos = linha.split("#");
+            linha = scn.nextLine();
+            campos = linha.split("#");
             
             loja.adicionarProduto(
                 new ProdutoVirtual(
@@ -121,6 +126,21 @@ public class DisplayLoja extends Display {
                 )
             );
         }
+        
+        arquivo = new File(lojaPath);
+        
+        try {
+            scn = new Scanner(arquivo);
+            scn.nextLine();
+
+            campos = scn.nextLine().split("#");
+
+            loja.setNome(campos[0]);
+            loja.setCnpj(campos[1]);
+            loja.setEndereco(campos[2]);
+        } catch (FileNotFoundException ex) {
+            System.out.println("Arquivo da loja nao foi encontrado.");
+        }
     }
     
     public void telaUsuario() {
@@ -131,7 +151,8 @@ public class DisplayLoja extends Display {
         System.out.println("2 - Realizar compra.");
         System.out.println("3 - Gerenciar categorias.");
         System.out.println("4 - Gerenciar produtos.");
-        System.out.println("5 - Salvar.");
+        System.out.println("5 - Gerenciar loja.");
+        System.out.println("6 - Salvar.");
         System.out.println("0 - Sair.");
         
         opcao = input.getIntInput();
@@ -153,6 +174,9 @@ public class DisplayLoja extends Display {
                 gerenciarProdutos();
                 break;
             case 5:
+                gerenciarLoja();
+                break;
+            case 6:
                 loja.salvar();
                 System.out.println("Salvo com exito.");
                 break;
@@ -269,5 +293,9 @@ public class DisplayLoja extends Display {
     
     private void gerenciarProdutos() {
         displayProdutos.telaGerente();
+    }
+    
+    private void gerenciarLoja() {
+        displayLoja.telaGerente();
     }
 }

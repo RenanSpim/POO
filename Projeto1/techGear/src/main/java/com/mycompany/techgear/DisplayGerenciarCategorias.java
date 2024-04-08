@@ -6,7 +6,7 @@ public class DisplayGerenciarCategorias extends Display {
     private Categoria catAux;
 
     public DisplayGerenciarCategorias(Loja loja) {
-        super();
+        super(loja);
     }
     
     public void telaGerente() {

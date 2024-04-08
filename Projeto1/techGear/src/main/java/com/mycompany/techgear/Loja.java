@@ -15,6 +15,7 @@ public class Loja {
     private String categoriaPath;
     private String produtoFisicoPath;
     private String produtoVirtualPath;
+    private String lojaPath;
     
     private Loja() {
         listaCategorias = new ArrayList<>();
@@ -23,24 +24,40 @@ public class Loja {
         endereco = "R. Cristóvão Colombo, 2265 - Jardim Nazareth, São José do Rio Preto - SP, 15054-000";
     }
     
-    public Loja(String categoriaPath, String fisicoPath, String virtualPath) {
+    public Loja(
+        String categoriaPath, String fisicoPath, String virtualPath,
+        String lojaPath
+    ) {
         this();
         
         this.categoriaPath = categoriaPath;
         this.produtoFisicoPath = fisicoPath;
         this.produtoVirtualPath = virtualPath;
+        this.lojaPath = lojaPath;
     }
     
     public String getNome() {
         return nome;
     }
     
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    
     public String getCnpj() {
         return cnpj;
     }
     
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+    
     public String getEndereco() {
         return endereco;
+    }
+    
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
     
     public List<Categoria> getListaCategorias() {
@@ -134,7 +151,7 @@ public class Loja {
     }
     
     public void salvar() {
-        FileWriter fw = null;
+        FileWriter fw;
         String conteudo, contAux;
         
         conteudo = "cod#nome#descricao\n";
@@ -170,6 +187,17 @@ public class Loja {
             fw.close();
             
             fw = new FileWriter(produtoVirtualPath);
+            fw.write(conteudo);
+            fw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Loja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        conteudo = "nome#cnpj#endereco\n";
+        conteudo += nome + "#" + cnpj + "#" + endereco + "\n";
+        
+        try {
+            fw = new FileWriter(lojaPath);
             fw.write(conteudo);
             fw.close();
         } catch (IOException ex) {

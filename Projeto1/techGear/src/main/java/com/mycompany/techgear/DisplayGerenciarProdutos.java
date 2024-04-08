@@ -8,7 +8,7 @@ public class DisplayGerenciarProdutos extends Display {
     ProdutoVirtual prodVirAux;
     
     public DisplayGerenciarProdutos(Loja loja) {
-        super();
+        super(loja);
     }
     
     public void telaGerente() {

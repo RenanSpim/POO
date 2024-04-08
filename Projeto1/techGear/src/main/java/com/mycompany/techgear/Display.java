@@ -10,6 +10,7 @@ public abstract class Display {
     }
     
     public Display(Loja loja) {
+        this();
         this.loja = loja;
     }
     
