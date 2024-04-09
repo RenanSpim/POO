@@ -1,2 +1,0 @@
-nome#cnpj#endereco
-TechGear#13.618.897/0001-63#R. Cristóvão Colombo, 2265 - Jardim Nazareth, São José do Rio Preto - SP, 15054-000
