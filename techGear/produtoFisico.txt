@@ -16,7 +16,7 @@ ID#nome#preco#descricao#marca#categoria#peso#dimensoes#estoque
 7704#Headset Bluetooth#593.96#Áudio de alta qualidade com conexão sem fio#Carson and Sons#106#3.41#17.1x14.79x43.48#0
 7994#Headset Bluetooth#1637.24#Áudio de alta qualidade com conexão sem fio#Dean, Reed and Allison#106#4.85#10.05x25.91x15.73#0
 2881#Headset Bluetooth#1080.94#Áudio de alta qualidade com conexão sem fio#Mcfarland PLC#106#0.87#18.41x25.0x48.56#0
-3406#Headset Bluetooth#250.22#Áudio de alta qualidade com conexão sem fio#Carrillo, Rodriguez and Clark#106#1.92#19.76x25.6x20.33	#0
+3406#Headset Bluetooth#250.22#Áudio de alta qualidade com conexão sem fio#Carrillo, Rodriguez and Clark#106#1.92#19.76x25.6x20.33#0
 3333#Sementes Orgânicas#151.81#Variedade de sementes para cultivo orgânico#Murphy LLC#107#3.38#46.59x30.74x29.41#0
 5552#Sementes Orgânicas#527.26#Variedade de sementes para cultivo orgânico#Cook-Schmidt#107#0.96#26.49x12.65x11.63#0
 5999#Sementes Orgânicas#578.67#Variedade de sementes para cultivo orgânico#Peck, Patterson and Roberson#107#0.56#16.71x39.19x22.06#0
@@ -179,3 +179,4 @@ ID#nome#preco#descricao#marca#categoria#peso#dimensoes#estoque
 1745#Cadeira de Realidade Virtual#1959.23#Imersão total nos seus jogos favoritos#Morris-Moon#115#2.29#13.46x14.07x47.6#0
 1707#Cadeira de Realidade Virtual#416.42#Imersão total nos seus jogos favoritos#Brandt, Lopez and Barber#115#2.79#38.27x21.01x14.08#0
 3766#Cadeira de Realidade Virtual#1018.36#Imersão total nos seus jogos favoritos#Huff and Sons#115#2.98#13.39x33.06x49.85#0
+21478901#renaozao#1000.99#uauuuu#eba#69#80.0#100.0x40.0x80.0#4000

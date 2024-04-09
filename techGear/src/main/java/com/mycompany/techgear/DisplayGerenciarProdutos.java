@@ -1,124 +1,167 @@
 package com.mycompany.techgear;
 
-public class DisplayGerenciarProdutos extends Display {
-    private int opcao;
-    String opcStr;
-    Categoria catAux;
-    ProdutoFisico prodFisAux;
-    ProdutoVirtual prodVirAux;
-    
+/**
+ * Classe responsável por exibir o gerenciamento dos produtos da loja. Esta
+ * classe implementa a interface Display para exibir a tela de gerenciamento dos
+ * produtos da loja. Permite ao usuário adicionar, remover, editar, ver todos os
+ * produtos ou ver um produto específico da loja. Os produtos podem ser físicos
+ * ou virtuais.
+ *
+ * @author RenanSPim
+ */
+public class DisplayGerenciarProdutos implements Display {
+
+    private Loja loja;
+    private Input input;
+    private String opcStr;
+    private Categoria catAux;
+    private ProdutoFisico prodFisAux;
+    private ProdutoVirtual prodVirAux;
+
+    /**
+     * Construtor da classe.
+     *
+     * @param loja A loja associada a esta instância de gerenciamento de
+     * produtos.
+     */
     public DisplayGerenciarProdutos(Loja loja) {
-        super(loja);
+        this.input = new Input();
+        this.loja = loja;
     }
-    
-    public void telaGerente() {
+
+    /**
+     * Exibe a tela principal para o gerenciamento dos produtos. Permite ao
+     * usuário selecionar entre várias opções, como adicionar, remover, editar,
+     * ver todos os produtos ou ver um produto específico.
+     */
+    public void tela() {
+        int opcao;
+
         printHeader();
         System.out.println("1 - Adicionar novo produto.");
         System.out.println("2 - Remover produto.");
         System.out.println("3 - Editar produto.");
         System.out.println("4 - Ver todos os produtos.");
         System.out.println("5 - Ver produto.");
-        System.out.println("0 - Sair.");
-        
-        opcao = input.getIntInput();
-        
-        switch (opcao) {
-            case 0:
-                System.out.println("Voltando para a tela do usuario...");
-                return;
-            case 1:
-                adicionarProduto();
-                break;
-            case 2:
-                removerProduto();
-                break;
-            case 3:
-                editarProduto();
-                break;
-            case 4:
-                verProdutos();
-                break;
-            case 5:
-                verProduto();
-                break;
-            default:
-                System.out.println("Operacao invalida, voltando para a tela do usuario...");
-                return;
-        }
-        
-        telaGerente();
-    }
-    
-    private void setCategoria(Produto prod) {
-        opcStr = input.getStringInput();
+        System.out.println("0 - Voltar.");
 
-        if (Input.inputHasNum(opcStr)) {
-            prod.setCategoria(loja.buscarCategoria(Integer.parseInt(opcStr)));
-        } else {
-            prod.setCategoria(loja.buscarCategoria(opcStr));
+        opcao = input.getIntInput();
+
+        try {
+            switch (opcao) {
+                case 0:
+                    System.out.println("Voltando para a tela do usuário...");
+                    return;
+                case 1:
+                    adicionarProduto();
+                    break;
+                case 2:
+                    removerProduto();
+                    break;
+                case 3:
+                    editarProduto();
+                    break;
+                case 4:
+                    verProdutos();
+                    break;
+                case 5:
+                    verProduto();
+                    break;
+                default:
+                    System.out.println("Operação inválida, voltando para a tela do usuário...");
+                    break;
+            }
+        } catch (Exception ex) {
+            System.out.println("Um erro ocorreu na tela de gerenciar produtos.");
+        } finally {
+            if (opcao != 0) {
+                tela();
+            }
         }
     }
-    
+
+    /**
+     * Imprime o cabeçalho.
+     */
+    private void printHeader() {
+        System.out.println("----------------");
+        System.out.println("----Produtos----");
+        System.out.println("----------------");
+    }
+
+    /**
+     * Define o produto auxiliar com base no input do usuário.
+     *
+     * @param message A mensagem a ser exibida para solicitar o input do
+     * usuário.
+     */
     private void setProdsAux(String message) {
         System.out.println(message);
         opcStr = input.getStringInput();
-        
+
         prodFisAux = null;
         prodVirAux = null;
-        
-        if (Input.inputHasNum(opcStr)) {
-            if (loja.buscarProduto(Integer.parseInt(opcStr)) instanceof ProdutoFisico) {
-                prodFisAux = (ProdutoFisico) loja.buscarProduto(Integer.parseInt(opcStr));
-            } else {
-                prodVirAux = (ProdutoVirtual) loja.buscarProduto(Integer.parseInt(opcStr));
-            }
+
+        if (loja.buscarProduto(opcStr) instanceof ProdutoFisico) {
+            prodFisAux = (ProdutoFisico) loja.buscarProduto(opcStr);
         } else {
-            if (loja.buscarProduto(Integer.parseInt(opcStr)) instanceof ProdutoFisico) {
-                prodFisAux = (ProdutoFisico) loja.buscarProduto(opcStr);
-            } else {
-                prodVirAux = (ProdutoVirtual) loja.buscarProduto(opcStr);
-            }
+            prodVirAux = (ProdutoVirtual) loja.buscarProduto(opcStr);
         }
     }
-    
+
+    /**
+     * Define a categoria de um produto.
+     *
+     * @param prod O produto cuja categoria será definida.
+     */
+    private void setCategoria(Produto prod) {
+        opcStr = input.getStringInput();
+        prod.setCategoria(loja.buscarCategoria(opcStr));
+    }
+
+    /**
+     * Adiciona um novo produto com base nos dados fornecidos pelo usuário.
+     */
     private void adicionarProduto() {
+        prodFisAux = new ProdutoFisico();
+        prodVirAux = new ProdutoVirtual();
+
         System.out.println("Informe os dados do produto que deseja criar:");
         System.out.println("Nome: ");
         prodFisAux.setNome(input.getStringInput());
 
-        System.out.println("Preco: ");verProduto();
+        System.out.println("Preço: ");
         prodFisAux.setPreco(input.getDoubleInput());
 
-        System.out.println("Descricao: ");
+        System.out.println("Descrição: ");
         prodFisAux.setDescricao(input.getStringInput());
 
         System.out.println("Marca: ");
         prodFisAux.setMarca(input.getStringInput());
 
-        System.out.println("Categoria (nome ou codigo): ");
+        System.out.println("Categoria (nome ou código): ");
         setCategoria(prodFisAux);
-        
+
         if (prodFisAux.getCategoria() == null) {
-            System.out.println("Nao encontramos a categoria desejada, retornando para a tela da gerencia...");
+            System.out.println("Não foi encontrada a categoria desejada, retornando para a tela de gerência...");
             return;
         }
 
         System.out.println("Id: ");
         if (!prodFisAux.setId(input.getIntInput())) {
-            System.out.println("Id em uso, retornando para a tela da gerencia...");
+            System.out.println("Id em uso, retornando para a tela de gerência...");
             return;
         }
 
-        System.out.println("O produto e virtual(v) ou fisico(f)? ");
+        System.out.println("O produto é virtual (v) ou físico (f)? ");
         opcStr = input.getStringInput();
 
-        if (!"v".equals(opcStr) && !"d".equals(opcStr) &&
-                !"V".equals(opcStr) && !"D".equals(opcStr)) {
-            System.out.println("Opcao invalida, retornando para a tela da gerencia...");
+        if (!"v".equalsIgnoreCase(opcStr) && !"f".equalsIgnoreCase(opcStr)) {
+            System.out.println("Opção inválida, retornando para a tela de gerência...");
             return;
         }
 
-        if (opcStr.equals("v")) {
+        if ("v".equalsIgnoreCase(opcStr)) {
             prodVirAux.setCategoria(prodFisAux.getCategoria());
             prodVirAux.setDescricao(prodFisAux.getDescricao());
             prodVirAux.setId(prodFisAux.getId());
@@ -137,16 +180,22 @@ public class DisplayGerenciarProdutos extends Display {
             System.out.println("Peso: ");
             prodFisAux.setPeso(input.getDoubleInput());
 
-            System.out.println("Dimensoes: ");
-            if (!prodFisAux.setDimensoes(opcStr)) {
-                System.out.println("Input incorreto para dimensoes, retornando para a tela da gerencia...");
+            System.out.println("Dimensões: ");
+
+            if (!prodFisAux.setDimensoes(input.getStringInput())) {
+                System.out.println("Input incorreto para dimensões, retornando para a tela de gerência...");
                 return;
             }
 
             loja.adicionarProduto(prodFisAux);
         }
+
+        System.out.println("Produto adicionado com sucesso.");
     }
-    
+
+    /**
+     * Remove um produto específico com base nos dados escolhidos pelo usuário.
+     */
     private void removerProduto() {
         setProdsAux("Informe o nome ou o id do produto que deseja remover:");
 
@@ -155,45 +204,50 @@ public class DisplayGerenciarProdutos extends Display {
         } else if (prodFisAux != null) {
             System.out.println("Deseja remover " + prodFisAux.toString() + "? [S/N]");
         } else {
-            System.out.println("O produto nao foi encontrado, retornando para a tela da gerencia...");
+            System.out.println("O produto não foi encontrado, retornando para a tela de gerência...");
             return;
         }
 
         opcStr = input.getStringInput();
 
-        if (opcStr.equals("S") || opcStr.equals("s")) {
-            System.out.println("Removendo...");
+        if (opcStr.equalsIgnoreCase("S")) {
+            System.out.println("Produto removido com sucesso.");
             loja.removerProduto(prodFisAux == null ? prodVirAux.getId() : prodFisAux.getId());
         } else {
-            System.out.println("Operacao cancelada.");
+            System.out.println("Operação cancelada.");
         }
     }
-    
+
+    /**
+     * Edita um produto específico com base nos dados escolhidos pelo usuário.
+     */
     private void editarProduto() {
-        setProdsAux("Informe o nome ou o codigo do produto que deseja editar:");
-        
+        int opcao;
+
+        setProdsAux("Informe o nome ou o id do produto que deseja editar:");
+
         if (prodVirAux != null) {
             mostrarProduto();
-            System.out.println("Deseja edita-lo? [S/N]");
+            System.out.println("Deseja editá-lo? [S/N]");
         } else if (prodFisAux != null) {
             mostrarProduto();
-            System.out.println("Deseja edita-lo? [S/N]");
+            System.out.println("Deseja editá-lo? [S/N]");
         } else {
-            System.out.println("O produto nao foi encontrado, retornando para a tela da gerencia...");
+            System.out.println("O produto não foi encontrado, retornando para a tela de gerência...");
             return;
         }
-        
+
         opcStr = input.getStringInput();
 
-        if (!opcStr.equals("S") && !opcStr.equals("s")) {
-            System.out.println("Operacao cancelada.");
+        if (!opcStr.equalsIgnoreCase("S")) {
+            System.out.println("Operação cancelada.");
             return;
         }
 
         System.out.println("O campo a ser editado: ");
         System.out.println("1 - Nome.");
-        System.out.println("2 - Preco.");
-        System.out.println("3 - Descricao.");
+        System.out.println("2 - Preço.");
+        System.out.println("3 - Descrição.");
         System.out.println("4 - Marca.");
         System.out.println("5 - Categoria.");
         System.out.println("6 - Estoque.");
@@ -219,8 +273,9 @@ public class DisplayGerenciarProdutos extends Display {
                         catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
                     } else {
                         catAux = loja.buscarCategoria(opcStr);
-                    }   if (catAux == null) {
-                        System.out.println("Categoria nao encontrada, retornando para a tela da gerencia...");
+                    }
+                    if (catAux == null) {
+                        System.out.println("Categoria não encontrada, retornando para a tela de gerência...");
                         return;
                     } else {
                         prodFisAux.setCategoria(catAux);
@@ -233,7 +288,7 @@ public class DisplayGerenciarProdutos extends Display {
                     System.out.println("Nada mudado.");
                     return;
             }
-            
+
             System.out.println("Produto alterado com sucesso.");
         } else {
             switch (opcao) {
@@ -255,8 +310,9 @@ public class DisplayGerenciarProdutos extends Display {
                         catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
                     } else {
                         catAux = loja.buscarCategoria(opcStr);
-                    }   if (catAux == null) {
-                        System.out.println("Categoria nao encontrada, retornando para a tela da gerencia.");
+                    }
+                    if (catAux == null) {
+                        System.out.println("Categoria não encontrada, retornando para a tela de gerência.");
                         return;
                     } else {
                         prodVirAux.setCategoria(catAux);
@@ -269,43 +325,52 @@ public class DisplayGerenciarProdutos extends Display {
                     System.out.println("Nada mudado.");
                     return;
             }
-            
+
             System.out.println("Produto alterado com sucesso.");
         }
     }
-    
+
+    /**
+     * Exibe todos os produtos existentes na loja.
+     */
     private void verProdutos() {
         for (Categoria categ : loja.getListaCategorias()) {
             DisplayGerenciarCategorias.mostrarCategoria(categ);
         }
     }
-    
+
+    /**
+     * Exibe um produto específico.
+     */
     private void verProduto() {
-        setProdsAux("Informe o nome ou o codigo do produto que deseja ver:");
+        setProdsAux("Informe o nome ou o código do produto que deseja ver:");
         mostrarProduto();
     }
-    
+
+    /**
+     * Imprime os detalhes do produto auxiliar.
+     */
     private void mostrarProduto() {
         if (prodFisAux != null) {
             System.out.println(prodFisAux.toString() + ":");
             System.out.println("Categoria: " + prodFisAux.getCategoria().getNome());
             System.out.println("Marca: " + prodFisAux.getMarca());
-            System.out.println("Descricao: " + prodFisAux.getDescricao());
-            System.out.println("Dimensoes: " + prodFisAux.getDimensoes());
+            System.out.println("Descrição: " + prodFisAux.getDescricao());
+            System.out.println("Dimensões: " + prodFisAux.getDimensoesStr());
             System.out.println("Peso: " + prodFisAux.getPeso());
             System.out.println("Estoque: " + prodFisAux.getEstoque());
-            System.out.println("Preco: $" + prodFisAux.getPreco());
+            System.out.println("Preço: $" + prodFisAux.getPreco());
         } else if (prodVirAux != null) {
             System.out.println(prodVirAux.toString() + ":");
             System.out.println("Categoria: " + prodVirAux.getCategoria().getNome());
             System.out.println("Marca: " + prodVirAux.getMarca());
-            System.out.println("Descricao: " + prodVirAux.getDescricao());
+            System.out.println("Descrição: " + prodVirAux.getDescricao());
             System.out.println("Formato: " + prodVirAux.getFormato());
             System.out.println("Tamanho: " + prodVirAux.getTamanhoArquivo() + " GB");
             System.out.println("Estoque: " + prodVirAux.getEstoque());
-            System.out.println("Preco: $" + prodVirAux.getPreco());
+            System.out.println("Preço: $" + prodVirAux.getPreco());
         } else {
-            System.out.println("Produto nao encontrado, retornado para a tela de gerencia...");
+            System.out.println("Produto não encontrado, retornando para a tela de gerência...");
         }
     }
 }

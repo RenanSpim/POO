@@ -1,23 +1,15 @@
 package com.mycompany.techgear;
 
-public abstract class Display {
-    protected Loja loja;
-    protected Input input;
-    
-    public Display() {
-        loja = null;
-        input = new Input();
-    }
-    
-    public Display(Loja loja) {
-        this();
-        this.loja = loja;
-    }
-    
-    protected void printHeader() {
-        System.out.println("----------------------------------");
-        System.out.println(loja.getNome());
-        System.out.println("----------------------------------");
-        System.out.println("Digite a operacao que deseja fazer: ");
-    }
+/**
+ * Interface que define o contrato para o display da loja. Implementações desta
+ * interface devem fornecer um método para exibir a tela da loja.
+ *
+ * @author RenanSPim
+ */
+public interface Display {
+
+    /**
+     * Exibe a tela da loja.
+     */
+    public void tela();
 }
