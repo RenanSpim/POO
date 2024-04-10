@@ -1,4 +1,4 @@
-Projeto individual de programacao orientada a objetos
+Projeto individual de programacao orientada a objetos\n
 Docente: Lucas Correia Ribas
 
 # Commerce techGear
