@@ -14,11 +14,10 @@ Categoria, Loja, ProdutoFisico e ProdutoVirtual, atendendo aos requisitos mínim
 e métodos descritos para cada uma). É encorajado expandir a funcionalidade do sistema por meio da
 adição de métodos, campos e classes adicionais.
 No início do programa, a função main deve definir três variáveis do tipo String, contendo os caminhos
-para os arquivos: categorias.txt, produtoFisico.txt e produtoVirtual.txt. Instruções detalhadas
-sobre o acesso e a utilização desses arquivos estão disponíveis na Seção 3 deste documento. Após a
-configuração inicial na função main, seu código deve criar uma instância de DisplayLoja, passando as
-três Strings com os caminhos dos arquivos de dados ao construtor. A classe DisplayLoja irá carregar
-os dados e disponibilizar a interface (linha de comando) para comunicação com o usuário, com busca de
-produtos, compra, inclusão e remoção, etc.
+para os arquivos: categorias.txt, produtoFisico.txt e produtoVirtual.txt. Após a configuração inicial
+na função main, seu código deve criar uma instância de DisplayLoja, passando as três Strings com os
+caminhos dos arquivos de dados ao construtor. A classe DisplayLoja irá carregar os dados e disponibilizar
+a interface (linha de comando) para comunicação com o usuário, com busca de produtos, compra, inclusão e
+remoção, etc.
 
 ### Docente: Lucas Correia Ribas
