@@ -1,7 +1,7 @@
 # Projetos de programação orientada a objetos
 ## Docente: Lucas Correia Ribas
 ---
-# Projeto 1: Commerce techGear
+## TechGear
 #### Projeto individual
 
   Neste projeto, você desenvolverá um sistema de Commerce utilizando Java, que possibilitará a criação
@@ -24,4 +24,3 @@ na função main, seu código deve criar uma instância de DisplayLoja, passando
 caminhos dos arquivos de dados ao construtor. A classe DisplayLoja irá carregar os dados e disponibilizar
 a interface (linha de comando) para comunicação com o usuário, com busca de produtos, compra, inclusão e
 remoção, etc.
----
