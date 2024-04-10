@@ -1,5 +1,5 @@
 # Commerce techGear
-## Projeto individual de programacao orientada a objetos
+## Projeto individual de programação orientada a objetos
 
 Neste projeto, você desenvolverá um sistema de Commerce utilizando Java, que possibilitará a criação
 e gestão de diversas classes fundamentais para o funcionamento de uma loja. Entre estas, destacam-
