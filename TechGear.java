@@ -23,6 +23,6 @@ public class TechGear {
                 categoriasPath, fisicosPath, virtuaisPath, lojaPath
         );
 
-        dpLoja.tela();
+        dpLoja.telaUsuario();
     }
 }

@@ -31,7 +31,7 @@ public class DisplayGerenciarCategorias implements Display {
      * usuário adicionar, remover, editar, visualizar categorias e seus
      * produtos.
      */
-    public void tela() {
+    public void telaUsuario() {
         int opcao;
 
         printHeader();
@@ -66,15 +66,17 @@ public class DisplayGerenciarCategorias implements Display {
                     break;
                 default:
                     System.out.println("Operação inválida, voltando para a tela do usuário...");
-                    break;
+                    return;
             }
         } catch (Exception ex) {
-            System.out.println("Um erro ocorreu na tela de gerenciar categorias.");
-        } finally {
-            if (opcao != 0) {
-                tela();
-            }
+            String[] erroMsg = new String[]
+                {"Voltar", "Adicionar categoria", "Remover categoria", "Editar categoria", "Ver todas as categorias", "Ver categoria"};
+            System.out.println("Um erro ocorreu na tela de gerenciar categorias...");
+            System.out.println("Na acao:\t" + erroMsg[opcao]);
+            return;
         }
+        
+        if (opcao != 0) telaUsuario();
     }
 
     /**

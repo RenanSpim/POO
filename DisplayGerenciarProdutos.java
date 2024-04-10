@@ -34,7 +34,7 @@ public class DisplayGerenciarProdutos implements Display {
      * usuário selecionar entre várias opções, como adicionar, remover, editar,
      * ver todos os produtos ou ver um produto específico.
      */
-    public void tela() {
+    public void telaUsuario() {
         int opcao;
 
         printHeader();
@@ -69,15 +69,17 @@ public class DisplayGerenciarProdutos implements Display {
                     break;
                 default:
                     System.out.println("Operação inválida, voltando para a tela do usuário...");
-                    break;
+                    return;
             }
         } catch (Exception ex) {
-            System.out.println("Um erro ocorreu na tela de gerenciar produtos.");
-        } finally {
-            if (opcao != 0) {
-                tela();
-            }
+            String[] erroMsg = new String[]
+                {"Voltar", "Adicionar novo produto", "Remover produto", "Editar produto", "Ver todos os produtos", "Ver produto"};
+            System.out.println("Um erro ocorreu na tela de gerenciar produtos...");
+            System.out.println("Na acao:\t" + erroMsg[opcao] + ".");
+            return;
         }
+
+        if (opcao != 0) telaUsuario();
     }
 
     /**
@@ -250,30 +252,41 @@ public class DisplayGerenciarProdutos implements Display {
         System.out.println("3 - Descrição.");
         System.out.println("4 - Marca.");
         System.out.println("5 - Categoria.");
-        System.out.println("6 - Estoque.");
+
+        if (prodVirAux != null) {
+            System.out.println("6 - Tamanho do arquivo.");
+            System.out.println("7 - Formato do arquivo.");
+        } else {
+            System.out.println("6 - Peso.");
+            System.out.println("7 - Dimensoes.");
+        }
+
+        System.out.println("8 - Estoque.");
         opcao = input.getIntInput();
 
         if (prodFisAux != null) {
             switch (opcao) {
                 case 1:
+                    System.out.println("Nome: (" + prodFisAux.getNome() + ")");
                     prodFisAux.setNome(input.getStringInput());
                     break;
                 case 2:
+                    System.out.println("Preco: (" + prodFisAux.getPreco() + ")");
                     prodFisAux.setPreco(input.getDoubleInput());
                     break;
                 case 3:
+                    System.out.println("Descricao: (" + prodFisAux.getDescricao() + ")");
                     prodFisAux.setDescricao(input.getStringInput());
                     break;
                 case 4:
+                    System.out.println("Marca: (" + prodFisAux.getMarca() + ")");
                     prodFisAux.setMarca(input.getStringInput());
                     break;
                 case 5:
+                    System.out.println("Categoria: " + prodFisAux.getCategoria().toString());
                     opcStr = input.getStringInput();
-                    if (Input.inputHasNum(opcStr)) {
-                        catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
-                    } else {
-                        catAux = loja.buscarCategoria(opcStr);
-                    }
+                    catAux = loja.buscarCategoria(opcStr);
+
                     if (catAux == null) {
                         System.out.println("Categoria não encontrada, retornando para a tela de gerência...");
                         return;
@@ -282,6 +295,15 @@ public class DisplayGerenciarProdutos implements Display {
                     }
                     break;
                 case 6:
+                    System.out.println("Peso (kg): (" + prodFisAux.getPeso() + ")");
+                    prodFisAux.setPeso(input.getDoubleInput());
+                    break;
+                case 7:
+                    System.out.println("Dimensoes: (" + prodFisAux.getDimensoesStr() + ")");
+                    prodFisAux.setDimensoes(input.getStringInput());
+                    break;
+                case 8:
+                    System.out.println("Estoque: (" + prodFisAux.getEstoque() + ")");
                     prodFisAux.setEstoque(input.getIntInput());
                     break;
                 default:
@@ -293,39 +315,49 @@ public class DisplayGerenciarProdutos implements Display {
         } else {
             switch (opcao) {
                 case 1:
+                    System.out.println("Nome: (" + prodVirAux.getNome() + ")");
                     prodVirAux.setNome(input.getStringInput());
                     break;
                 case 2:
+                    System.out.println("Preco: (" + prodVirAux.getPreco() + ")");
                     prodVirAux.setPreco(input.getDoubleInput());
                     break;
                 case 3:
+                    System.out.println("Descricao: (" + prodVirAux.getDescricao() + ")");
                     prodVirAux.setDescricao(input.getStringInput());
                     break;
                 case 4:
+                    System.out.println("Marca: (" + prodVirAux.getMarca() + ")");
                     prodVirAux.setMarca(input.getStringInput());
                     break;
                 case 5:
+                    System.out.println("Categoria: " + prodVirAux.getCategoria().toString());
                     opcStr = input.getStringInput();
-                    if (Input.inputHasNum(opcStr)) {
-                        catAux = loja.buscarCategoria(Integer.parseInt(opcStr));
-                    } else {
-                        catAux = loja.buscarCategoria(opcStr);
-                    }
+                    catAux = loja.buscarCategoria(opcStr);
+
                     if (catAux == null) {
-                        System.out.println("Categoria não encontrada, retornando para a tela de gerência.");
+                        System.out.println("Categoria não encontrada, retornando para a tela de gerência...");
                         return;
                     } else {
                         prodVirAux.setCategoria(catAux);
                     }
                     break;
                 case 6:
-                    prodFisAux.setEstoque(input.getIntInput());
+                    System.out.println("Tamanho do arquivo (gb): (" + prodVirAux.getTamanhoArquivo() + ")");
+                    prodVirAux.setTamanhoArquivo(input.getDoubleInput());
+                    break;
+                case 7:
+                    System.out.println("Formato: (" + prodVirAux.getFormato() + ")");
+                    prodVirAux.setFormato(input.getStringInput());
+                    break;
+                case 8:
+                    System.out.println("Estoque: (" + prodVirAux.getEstoque() + ")");
+                    prodVirAux.setEstoque(input.getIntInput());
                     break;
                 default:
                     System.out.println("Nada mudado.");
                     return;
             }
-
             System.out.println("Produto alterado com sucesso.");
         }
     }

@@ -11,5 +11,5 @@ public interface Display {
     /**
      * Exibe a tela da loja.
      */
-    public void tela();
+    public void telaUsuario();
 }

@@ -163,7 +163,7 @@ public class DisplayLoja implements Display {
     /**
      * Método para exibir a tela principal da loja e suas opções.
      */
-    public void tela() {
+    public void telaUsuario() {
         int opcao;
 
         printHeader();
@@ -206,12 +206,14 @@ public class DisplayLoja implements Display {
                     break;
             }
         } catch (Exception ex) {
-            System.out.println("Um erro ocorreu na tela principal do programa.");
-        } finally {
-            if (opcao != 0) {
-                tela();
-            }
+            String[] erroMsg = new String[]
+                {"Sair", "Adicionar ao carrinho", "Realizar compra", "Gerenciar categorias", "Gerenciar produtos", "Gerenciar loja", "Salvar"};
+            
+            System.out.println("Um erro ocorreu na tela principal do programa...");
+            System.out.println("Na acao:\t" + erroMsg[opcao]);
         }
+        
+        if (opcao != 0) telaUsuario();
     }
 
     /**
@@ -317,20 +319,20 @@ public class DisplayLoja implements Display {
      * Método para gerenciar as categorias da loja.
      */
     private void gerenciarCategorias() {
-        displayCategorias.tela();
+        displayCategorias.telaUsuario();
     }
 
     /**
      * Método para gerenciar os produtos da loja.
      */
     private void gerenciarProdutos() {
-        displayProdutos.tela();
+        displayProdutos.telaUsuario();
     }
 
     /**
      * Método para gerenciar as informações da loja.
      */
     private void gerenciarLoja() {
-        displayLoja.tela();
+        displayLoja.telaUsuario();
     }
 }

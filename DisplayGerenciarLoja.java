@@ -28,7 +28,7 @@ public class DisplayGerenciarLoja implements Display {
      * Permite ao usuário selecionar o que deseja modificar: nome, CNPJ ou
      * endereço.
      */
-    public void tela() {
+    public void telaUsuario() {
         int opcao;
 
         System.out.println("Selecione o que deseja modificar:");
@@ -55,13 +55,18 @@ public class DisplayGerenciarLoja implements Display {
                     break;
                 default:
                     System.out.println("Operação inválida, voltando para a tela do usuário...");
-                    break;
+                    return;
             }
         } catch (Exception ex) {
-            System.out.println("Um erro ocorreu na tela de gerenciar loja.");
-        } finally {
-            System.out.println("Loja alterada com sucesso, voltando para a tela do usuário...");
+            String[] erroMsg = new String[]
+                {"Voltar", "Nome", "Cnpj", "Endereco"};
+            System.out.println("Um erro ocorreu na tela de gerenciar loja...");
+            System.out.println("Na acao:\t" + erroMsg[opcao]);
+            return;
         }
+        
+        if (opcao != 0)
+            System.out.println("Loja alterada com sucesso, voltando para a tela do usuário...");
     }
 
     /**
