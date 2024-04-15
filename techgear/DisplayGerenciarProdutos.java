@@ -375,7 +375,7 @@ public class DisplayGerenciarProdutos implements Display {
      * Exibe um produto específico.
      */
     private void verProduto() {
-        setProdsAux("Informe o nome ou o código do produto que deseja ver:");
+        setProdsAux("Informe o nome ou o id do produto que deseja ver:");
         mostrarProduto();
     }
 

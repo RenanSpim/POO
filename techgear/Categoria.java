@@ -16,9 +16,9 @@ public class Categoria {
     private List<Produto> listaProdutos;
 
     /**
-     * Construtor privado vazio para inicialização da lista de produtos.
+     * Construtor vazio para inicialização da lista de produtos.
      */
-    private Categoria() {
+    public Categoria() {
         listaProdutos = new ArrayList<>();
     }
 

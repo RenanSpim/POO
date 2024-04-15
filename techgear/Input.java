@@ -39,11 +39,10 @@ public class Input {
         int inp;
 
         do {
-            inp = scanner.nextInt();
-            scanner.nextLine();
-            if (inp < min || inp > max) {
+            inp = Integer.parseInt(scanner.nextLine());
+            
+            if (inp < min || inp > max)
                 System.out.println("Input precisa estar entre " + min + " e " + max + ".");
-            }
         } while (inp < min || inp > max);
 
         return inp;
@@ -70,8 +69,7 @@ public class Input {
         double inp;
 
         do {
-            inp = scanner.nextDouble();
-            scanner.nextLine();
+            inp = Double.parseDouble(scanner.nextLine());
             if (inp < min || inp > max) {
                 System.out.println("Input precisa estar entre " + min + " e " + max + ".");
             }

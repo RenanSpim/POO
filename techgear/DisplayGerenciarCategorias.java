@@ -108,11 +108,12 @@ public class DisplayGerenciarCategorias implements Display {
      * Permite ao usuário adicionar uma nova categoria.
      */
     private void adicionarCategoria() {
+        catAux = new Categoria();
         System.out.println("Informe os dados da categoria que deseja criar:");
 
         System.out.println("Codigo: ");
         int codigo = input.getIntInput();
-
+        
         if (loja.buscarCategoria(codigo) == null) {
             catAux.setCodigo(codigo);
         } else {

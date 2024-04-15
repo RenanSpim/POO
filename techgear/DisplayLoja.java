@@ -209,6 +209,7 @@ public class DisplayLoja implements Display {
             String[] erroMsg = new String[]
                 {"Sair", "Adicionar ao carrinho", "Realizar compra", "Gerenciar categorias", "Gerenciar produtos", "Gerenciar loja", "Salvar"};
             
+            System.out.println(ex);
             System.out.println("Um erro ocorreu na tela principal do programa...");
             System.out.println("Na acao:\t" + erroMsg[opcao]);
         }
@@ -235,10 +236,9 @@ public class DisplayLoja implements Display {
 
         System.out.println("Informe o nome ou o id do produto que deseja buscar:");
         opcStr = input.getStringInput();
-
+        
         if (loja.buscarProduto(opcStr) instanceof ProdutoFisico) {
             prodFisAux = (ProdutoFisico) loja.buscarProduto(opcStr);
-
             System.out.println(prodFisAux.toString());
             adicionarAoCarrinho(opcStr);
         } else {
@@ -291,7 +291,7 @@ public class DisplayLoja implements Display {
             precoTotal += prod.getPreco();
         }
 
-        System.out.println("Preco total: $" + precoTotal);
+        System.out.println("Preco total: $" + Math.round(precoTotal * 100) / 100.0);
     }
 
     /**
@@ -309,9 +309,17 @@ public class DisplayLoja implements Display {
                 prod.atualizarEstoque(-1);
             }
 
-            loja.salvar();
             System.out.println("Compra feita com sucesso.");
             carrinho = new ArrayList<>();
+            loja.salvar();
+        } else {
+            System.out.println("Deseja limpar o carrinho? [S/N]");
+            opcStr = input.getStringInput();
+            
+            if (opcStr.equalsIgnoreCase("s")) {
+                carrinho = new ArrayList<>();
+                System.out.println("Carrinho esta vazio.");
+            }
         }
     }
 

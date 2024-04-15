@@ -145,18 +145,27 @@ public class Loja {
     }
 
     /**
-     * Busca uma categoria pelo nome.
+     * Busca uma categoria pelo nome ou código.
      *
-     * @param nome O nome da categoria a ser buscada.
+     * @param nome O nome ou código da categoria a ser buscada.
      * @return A categoria encontrada ou null se não encontrada.
      */
     public Categoria buscarCategoria(String nome) {
         Categoria categoriaBuscada = null;
-
-        for (Categoria categ : listaCategorias) {
-            if (categ.getNome().equals(nome)) {
-                categoriaBuscada = categ;
-                break;
+        
+        if (Input.inputHasNum(nome)) {
+            for (Categoria categ : listaCategorias) {
+                if (categ.getCodigo() == Integer.parseInt(nome)) {
+                    categoriaBuscada = categ;
+                    break;
+                }
+            }
+        } else {
+            for (Categoria categ : listaCategorias) {
+                if (categ.getNome().equals(nome)) {
+                    categoriaBuscada = categ;
+                    break;
+                }
             }
         }
 
