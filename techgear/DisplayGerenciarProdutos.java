@@ -391,7 +391,7 @@ public class DisplayGerenciarProdutos implements Display {
             System.out.println("Dimensões: " + prodFisAux.getDimensoesStr());
             System.out.println("Peso: " + prodFisAux.getPeso());
             System.out.println("Estoque: " + prodFisAux.getEstoque());
-            System.out.println("Preço: $" + prodFisAux.getPreco());
+            System.out.println("Preço: $" + prodFisAux.getPreco() + "\nFrete: " + prodFisAux.calcularFrete(1) + "/km");
         } else if (prodVirAux != null) {
             System.out.println(prodVirAux.toString() + ":");
             System.out.println("Categoria: " + prodVirAux.getCategoria().getNome());

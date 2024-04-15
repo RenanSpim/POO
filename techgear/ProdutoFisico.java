@@ -125,12 +125,15 @@ public class ProdutoFisico extends Produto {
      */
     public double calcularFrete(double distancia) {
         double volume = dimensoes[0] * dimensoes[1] * dimensoes[2];
-        double taxaVariavel = (volume / 10_000) * (peso / 100) * distancia;
-        double taxaFixa = (volume / 1000) * (peso / 10);
+        double taxaVariavel = (volume / 100_000) * (peso / 100) * distancia;
+        double taxaFixa = (volume / 10_000) * (peso / 10);
 
-        return taxaVariavel + taxaFixa;
+        return Math.round((taxaVariavel + taxaFixa) * 100) / 100.0;
     }
-
+    
+    /**
+     * @return o produto no formato da base de dados.
+     */
     @Override
     public String toLine() {
         return getId() + "#" + getNome() + "#" + getPreco() + "#"

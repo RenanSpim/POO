@@ -83,6 +83,9 @@ public class ProdutoVirtual extends Produto {
         atualizarEstoque(-1);
     }
 
+    /**
+     * @return o produto no formato da base de dados.
+     */
     @Override
     public String toLine() {
         return getId() + "#" + getNome() + "#" + getPreco() + "#"
