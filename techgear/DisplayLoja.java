@@ -284,11 +284,17 @@ public class DisplayLoja implements Display {
      */
     private void mostrarCarrinho() {
         double precoTotal = 0;
+        
+        System.out.println("O consumidor mora a quantos km da loja?");
+        double distancia = input.getDoubleInput();
 
         System.out.println("Carrinho (" + carrinho.size() + "):");
         for (Produto prod : carrinho) {
             System.out.println(prod.getNome() + ": $" + prod.getPreco());
             precoTotal += prod.getPreco();
+            if (prod instanceof ProdutoFisico) {
+                precoTotal += ((ProdutoFisico) prod).calcularFrete(distancia);
+            }
         }
 
         System.out.println("Preco total: $" + Math.round(precoTotal * 100) / 100.0);
@@ -299,14 +305,18 @@ public class DisplayLoja implements Display {
      */
     private void realizarCompra() {
         String opcStr;
-
+        
         mostrarCarrinho();
         System.out.println("O cliente deseja prosseguir com a compra? [S/N]");
         opcStr = input.getStringInput();
 
         if (opcStr.equals("S") || opcStr.equals("s")) {
             for (Produto prod : carrinho) {
-                prod.atualizarEstoque(-1);
+                if (prod instanceof ProdutoFisico) {
+                    prod.atualizarEstoque(-1);
+                } else {
+                    ((ProdutoVirtual) prod).realizarDownload();
+                }
             }
 
             System.out.println("Compra feita com sucesso.");
