@@ -239,11 +239,11 @@ public class DisplayLoja implements Display {
         if (loja.buscarProduto(opcStr) instanceof ProdutoFisico) {
             prodFisAux = (ProdutoFisico) loja.buscarProduto(opcStr);
 
-            System.out.println(prodFisAux.toString() + " tem " + prodFisAux.getEstoque() + " itens no estoque.");
+            System.out.println(prodFisAux.toString());
             adicionarAoCarrinho(opcStr);
         } else {
             prodVirAux = (ProdutoVirtual) loja.buscarProduto(opcStr);
-            System.out.println(prodVirAux.toString() + " tem " + prodVirAux.getEstoque() + " itens no estoque.");
+            System.out.println(prodVirAux.toString());
             adicionarAoCarrinho(opcStr);
         }
     }
@@ -271,7 +271,7 @@ public class DisplayLoja implements Display {
             prodVirAux = (ProdutoVirtual) loja.buscarProduto(opcStr);
             System.out.println("Quantos " + prodVirAux.toString() + " vao ser adicionados ao carrinho?");
             System.out.println("Em estoque: " + prodVirAux.getEstoque());
-            opcao = input.getIntInput(1, prodVirAux.getEstoque());
+            opcao = input.getIntInput(0, prodVirAux.getEstoque());
 
             for (int i = 0; i < opcao; i++) {
                 carrinho.add(prodVirAux);
